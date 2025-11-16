@@ -80,3 +80,14 @@
     </td>
   </tr>
 </table>
+
+<br>
+<h3>4. 위젯</h3>
+<table>
+  <tr>
+    <td width="50%" style="text-align:center; vertical-align:top;">
+    <div>• 위젯</div>
+    <video src="https://github.com/user-attachments/assets/9ae84a70-2279-45e7-9214-5b5eb73937aa" width="100%" controls></video>
+    </td>
+  </tr>
+</table>
