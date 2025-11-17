@@ -37,6 +37,7 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
+import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import dagger.hilt.EntryPoint
@@ -138,10 +139,12 @@ object CalendarWidget : GlanceAppWidget() {
                                     fontSize = 40.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = ColorProvider(Color.Black),
+                                    textAlign = TextAlign.Center,
                                 ),
+                            modifier = GlanceModifier.width(52.dp),
                         )
 
-                        Spacer(modifier = GlanceModifier.width(12.dp))
+                        Spacer(modifier = GlanceModifier.width(8.dp))
 
                         Column(
                             verticalAlignment = Alignment.Vertical.CenterVertically,
@@ -158,7 +161,7 @@ object CalendarWidget : GlanceAppWidget() {
                             Text(
                                 text =
                                     if (selectedDate == today) {
-                                        "오늘, ${selectedDate.dayOfWeek.getDisplayName(FULL, KOREAN)}"
+                                        "${selectedDate.dayOfWeek.getDisplayName(FULL, KOREAN)}, 오늘"
                                     } else {
                                         selectedDate.dayOfWeek.getDisplayName(FULL, KOREAN)
                                     },
