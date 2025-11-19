@@ -1,12 +1,9 @@
 package pusan.university.plato_calendar.presentation.widget.callback
 
 import android.content.Context
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
-import androidx.glance.appwidget.state.updateAppWidgetState
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -14,14 +11,10 @@ import kotlinx.coroutines.withContext
 import pusan.university.plato_calendar.domain.entity.LoginStatus
 import pusan.university.plato_calendar.domain.entity.Schedule.PersonalSchedule.CourseSchedule
 import pusan.university.plato_calendar.domain.entity.Schedule.PersonalSchedule.CustomSchedule
-import pusan.university.plato_calendar.presentation.calendar.model.ScheduleUiModel
 import pusan.university.plato_calendar.presentation.calendar.model.ScheduleUiModel.PersonalScheduleUiModel
 import pusan.university.plato_calendar.presentation.calendar.model.ScheduleUiModel.PersonalScheduleUiModel.CourseScheduleUiModel
 import pusan.university.plato_calendar.presentation.calendar.model.ScheduleUiModel.PersonalScheduleUiModel.CustomScheduleUiModel
-import pusan.university.plato_calendar.presentation.common.serializer.PersonalScheduleSerializer
-import pusan.university.plato_calendar.presentation.widget.CalendarWidget
 import pusan.university.plato_calendar.presentation.widget.CalendarWidget.WidgetEntryPoint
-import java.time.LocalDate
 
 class RefreshSchedulesCallback : ActionCallback {
     override suspend fun onAction(
@@ -29,11 +22,6 @@ class RefreshSchedulesCallback : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters,
     ) {
-        updateAppWidgetState(context, glanceId) { prefs ->
-            prefs[booleanPreferencesKey("is_loading")] = true
-        }
-        CalendarWidget.update(context, glanceId)
-
         val entryPoint =
             EntryPointAccessors.fromApplication(
                 context.applicationContext,
@@ -45,6 +33,7 @@ class RefreshSchedulesCallback : ActionCallback {
         val loginManager = entryPoint.loginManager()
         val settingsManager = entryPoint.settingsManager()
         val alarmScheduler = entryPoint.alarmScheduler()
+        val widgetUpdater = entryPoint.widgetUpdater()
 
         suspend fun getPersonalSchedules(sessKey: String): List<PersonalScheduleUiModel> {
             scheduleRepository
@@ -75,22 +64,19 @@ class RefreshSchedulesCallback : ActionCallback {
             return emptyList()
         }
 
-        suspend fun syncAlarms(schedules: List<ScheduleUiModel>) {
+        suspend fun syncAlarms(personalSchedules: List<PersonalScheduleUiModel>) {
             val settings = settingsManager.appSettings.first()
-
-            val personalSchedules =
-                schedules
-                    .filterIsInstance<PersonalScheduleUiModel>()
-                    .filter { !it.isCompleted }
 
             if (settings.notificationsEnabled) {
                 alarmScheduler.scheduleNotificationsForSchedule(
-                    personalSchedules = personalSchedules,
+                    personalSchedules = personalSchedules.filter { !it.isCompleted },
                     firstReminderTime = settings.firstReminderTime,
                     secondReminderTime = settings.secondReminderTime,
                 )
             }
         }
+
+        widgetUpdater.setWidgetsLoading()
 
         loginManager.autoLogin()
 
@@ -109,16 +95,6 @@ class RefreshSchedulesCallback : ActionCallback {
 
         syncAlarms(personalSchedules)
 
-        val schedulesJson = PersonalScheduleSerializer.serializePersonalSchedules(personalSchedules)
-        val today = LocalDate.now().toString()
-
-        updateAppWidgetState(context, glanceId) { prefs ->
-            prefs[stringPreferencesKey("schedules_list")] = schedulesJson
-            prefs[stringPreferencesKey("today")] = today
-            prefs[stringPreferencesKey("selected_date")] = today
-            prefs[booleanPreferencesKey("is_loading")] = false
-        }
-
-        CalendarWidget.update(context, glanceId)
+        widgetUpdater.updateAllWidgets(personalSchedules)
     }
 }

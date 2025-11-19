@@ -16,7 +16,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class BootReceiver : BroadcastReceiver() {
-
     @Inject
     lateinit var alarmScheduler: AlarmScheduler
 
@@ -26,7 +25,10 @@ class BootReceiver : BroadcastReceiver() {
     @Inject
     lateinit var settingsManager: SettingsManager
 
-    override fun onReceive(context: Context, intent: Intent) {
+    override fun onReceive(
+        context: Context,
+        intent: Intent,
+    ) {
         if (intent.action != Intent.ACTION_BOOT_COMPLETED) {
             return
         }
@@ -49,7 +51,7 @@ class BootReceiver : BroadcastReceiver() {
                 alarmScheduler.scheduleNotificationsForSchedule(
                     personalSchedules = personalSchedules,
                     firstReminderTime = settings.firstReminderTime,
-                    secondReminderTime = settings.secondReminderTime
+                    secondReminderTime = settings.secondReminderTime,
                 )
             } finally {
                 pendingResult.finish()

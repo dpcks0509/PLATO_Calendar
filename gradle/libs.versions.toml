@@ -26,6 +26,7 @@ firebase-bom = "34.4.0"
 firebase-crashlytics = "3.0.6"
 google-services = "4.4.4"
 glance = "1.1.1"
+work = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,6 +65,8 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
 glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltLifecycle" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -120,7 +123,8 @@ serialization = [
 
 hilt = [
     "hilt-android",
-    "androidx-hilt-navigation-compose"
+    "androidx-hilt-navigation-compose",
+    "androidx-hilt-work"
 ]
 
 hilt-kapt = [

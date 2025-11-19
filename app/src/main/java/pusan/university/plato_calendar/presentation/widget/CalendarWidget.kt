@@ -55,6 +55,7 @@ import pusan.university.plato_calendar.presentation.widget.callback.NavigateDate
 import pusan.university.plato_calendar.presentation.widget.callback.OpenNewScheduleCallback
 import pusan.university.plato_calendar.presentation.widget.callback.RefreshSchedulesCallback
 import pusan.university.plato_calendar.presentation.widget.component.ScheduleWidgetItem
+import pusan.university.plato_calendar.presentation.widget.util.WidgetUpdater
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle.FULL
@@ -81,6 +82,8 @@ object CalendarWidget : GlanceAppWidget() {
         fun settingsManager(): SettingsManager
 
         fun alarmScheduler(): AlarmScheduler
+
+        fun widgetUpdater(): WidgetUpdater
     }
 
     data class ScheduleWidgetUiModel(

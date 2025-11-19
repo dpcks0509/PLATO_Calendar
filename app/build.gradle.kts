@@ -125,6 +125,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.google.admob)
     implementation(libs.bundles.glance)
+    implementation(libs.androidx.work.runtime.ktx)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
