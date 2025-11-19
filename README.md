@@ -67,7 +67,7 @@
 </table>
 
 <br>
-<h3>3. 설정</h3>
+<h3>3. 설정 & 알림</h3>
 <table>
   <tr>
     <td width="50%" style="text-align:center; vertical-align:top;">
