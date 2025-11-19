@@ -15,7 +15,7 @@
 
 <h2>💡 주요 기능</h2>
 
-<h3>1. 달력</h3>
+<h3>1. 캘린더</h3>
 <table>
   <tr>
     <td width="50%" style="text-align:center; vertical-align:top;">
@@ -52,7 +52,7 @@
 </table>
 
 <br>
-<h3>2. 할일</h3>
+<h3>2. 할일 (To-Do)</h3>
 <table>
   <tr>
     <td width="50%" style="text-align:center; vertical-align:top;">
