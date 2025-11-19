@@ -1,12 +1,12 @@
 package pusan.university.plato_calendar.data.request
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeletePersonalScheduleRequest(
     val index: Int = 0,
-    @SerializedName("methodname")
+    @SerialName("methodname")
     val methodName: String = "core_calendar_delete_calendar_events",
     val args: DeletePersonalScheduleArgs,
 )
@@ -18,7 +18,7 @@ data class DeletePersonalScheduleArgs(
 
 @Serializable
 data class DeletePersonalScheduleEvent(
-    @SerializedName("eventid")
+    @SerialName("eventid")
     val eventId: Long,
     val repeat: Boolean,
 )

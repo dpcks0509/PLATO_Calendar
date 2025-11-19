@@ -1,9 +1,8 @@
 package pusan.university.plato_calendar.data.local.repository
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.serialization.json.Json
 import pusan.university.plato_calendar.domain.repository.CourseRepository
 import pusan.university.plato_calendar.presentation.common.extension.formatCourseCode
 import javax.inject.Inject
@@ -14,6 +13,7 @@ class LocalCourseRepository
     @Inject
     constructor(
         @ApplicationContext context: Context,
+        private val json: Json,
     ) : CourseRepository {
         private val courses: Map<String, String> by lazy {
             val jsonString =
@@ -22,8 +22,7 @@ class LocalCourseRepository
                     .bufferedReader()
                     .use { it.readText() }
 
-            val type = object : TypeToken<Map<String, String>>() {}.type
-            Gson().fromJson(jsonString, type)
+            json.decodeFromString<Map<String, String>>(jsonString)
         }
 
         override fun getCourseName(courseCode: String): String =

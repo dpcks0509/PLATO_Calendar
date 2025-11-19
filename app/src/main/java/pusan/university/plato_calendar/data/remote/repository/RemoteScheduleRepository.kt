@@ -125,7 +125,10 @@ class RemoteScheduleRepository
                         if (responseBody.error) {
                             return Result.failure(Exception(CREATE_SCHEDULE_FAILED_ERROR))
                         }
-                        val id = responseBody.data.event.id
+                        val id =
+                            responseBody.data?.event?.id ?: return Result.failure(
+                                Exception(CREATE_SCHEDULE_FAILED_ERROR),
+                            )
 
                         return Result.success(id)
                     }

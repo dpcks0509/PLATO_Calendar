@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PersonalScheduleResponse(
     val error: Boolean,
-    val data: PersonalScheduleData,
+    val data: PersonalScheduleData?,
 )
 
 @Serializable
